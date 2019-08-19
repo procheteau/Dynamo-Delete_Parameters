@@ -1,0 +1,33 @@
+#Collects all the family parameters in the document and filters out Built-In Parameters
+
+import clr
+clr.AddReference('RevitAPI')
+from Autodesk.Revit.DB import*
+import Autodesk
+
+clr.AddReference("RevitServices")
+import RevitServices
+from RevitServices.Persistence import DocumentManager
+from RevitServices.Transactions import TransactionManager
+uiapp = DocumentManager.Instance.CurrentUIApplication
+app = uiapp.Application
+
+doc=DocumentManager.Instance.CurrentDBDocument
+
+FamilyMan=doc.FamilyManager
+parameters=FamilyMan.Parameters
+
+paramsToDel = []
+paramsBuiltIn = []
+
+for param in parameters:
+	if param.Definition.BuiltInParameter != BuiltInParameter.INVALID:
+		paramsBuiltIn.append(param.Definition.Name)
+	else:
+		paramsToDel.append(param.Definition.Name)
+
+OUT = paramsToDel, paramsBuiltIn
+	
+	
+	
+
